@@ -1,0 +1,18 @@
+{
+  "name": "anauseam-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build:web": "npm run build --workspace anauseam-site-v2",
+    "build:library": "npm run build --workspace anauseam-site-library",
+    "build": "npm run build:web && npm run build:library",
+    "dev:web": "npm run dev --workspace anauseam-site-v2",
+    "dev:library": "npm run dev --workspace anauseam-site-library",
+    "deploy:web": "npm run deploy --workspace anauseam-site-v2",
+    "deploy:library": "npm run deploy --workspace anauseam-site-library"
+  }
+}
+
+
