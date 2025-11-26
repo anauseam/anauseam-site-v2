@@ -3,14 +3,55 @@ import LibraryLayout from '../../layouts/LibraryLayout.astro';
 import BooksList from '../../components/library/BooksList';
 import Sidebar from '../../components/library/Sidebar';
 import Header from '../../components/Header.astro';
-import { mockBooks } from '../../data/mock-books';
 import { groupByGenre } from '../../lib/library-utils';
 
 const title = "Library | Anauseam";
 const description = "My personal library of books.";
 const permalink = Astro.site ? `${Astro.site}library` : '/library';
 
-const genres = groupByGenre(mockBooks);
+let books = [];
+
+// Try to fetch from D1 first
+if (Astro.locals.runtime?.env?.DB) {
+  try {
+    const db = Astro.locals.runtime.env.DB;
+    
+    // Fetch Projects
+    const projectsResult = await db.prepare('SELECT * FROM projects ORDER BY created_at DESC').all();
+    const projects = (projectsResult.results || []).map(p => ({
+      id: `proj-${p.id}`, 
+      title: p.name,
+      author: p.language || 'Software',
+      description: p.description,
+      image_url: '/assets/home-illustration-small.webp', // Placeholder
+      genre: 'Software Project',
+      created_at: p.created_at
+    }));
+
+    // Fetch Reports
+    const reportsResult = await db.prepare('SELECT * FROM reports ORDER BY created_at DESC').all();
+    const reports = (reportsResult.results || []).map(r => ({
+      id: `rep-${r.id}`,
+      title: r.title,
+      author: r.author || 'Anauseam',
+      description: r.summary,
+      image_url: '/assets/about-illustration.webp', // Placeholder
+      genre: 'Analysis',
+      created_at: r.created_at
+    }));
+
+    books = [...projects, ...reports];
+  } catch (e) {
+    console.error("Error fetching from D1:", e);
+  }
+} else {
+  // Fallback for development without D1 binding
+  console.warn("No D1 binding found, using mock data");
+  const { mockBooks } = await import('../../data/mock-books');
+  books = mockBooks;
+}
+
+const genres = groupByGenre(books);
 ---
 
 <LibraryLayout title={title} description={description} permalink={permalink}>
@@ -28,7 +69,7 @@ const genres = groupByGenre(mockBooks);
               <p class="text-[var(--text-main)] leading-relaxed mb-4 opacity-80">Library of projects and analyses</p>
           </div>
           
-          <BooksList books={mockBooks} client:load />
+          <BooksList books={books} client:load />
         </div>
     </main>
   </div>
