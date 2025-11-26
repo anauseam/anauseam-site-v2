@@ -5,7 +5,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "postbuild": "printf \"_worker.js\\n_routes.json\\n\" > dist/.assetsignore",
     "preview": "astro preview",
+    "deploy": "wrangler deploy --config wrangler.json",
     "astro": "astro"
   },
   "dependencies": {
