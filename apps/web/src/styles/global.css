@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --background-body: #fff;
   --text-main: #36393b;
@@ -5,6 +7,19 @@
   --primary-color: #548e9b;
   --font-family-serif: Merriweather, serif;
   --font-family-sans: 'Fira Sans', sans-serif;
+  
+  /* Library Specific Variables (Light Mode) */
+  --layout-bg: #f9fafb; /* gray-50 */
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb; /* gray-200 */
+  --card-border-hover: #6b7280; /* gray-500 */
+  --card-image-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e5e7eb; /* gray-200 */
+  --sidebar-active-bg: #eff6ff; /* blue-50 */
+  --sidebar-active-text: #1e40af; /* blue-800 */
+  --sidebar-hover-bg: #eff6ff; /* blue-50 */
+  --btn-primary-bg: #000000;
 }
 
 :root.theme-dark {
@@ -12,6 +27,19 @@
   --text-main: #fff;
   --text-secondary: #ccc;
   --primary-color: #548e9b;
+
+  /* Library Specific Variables (Dark Mode) */
+  --layout-bg: #1a1b1e; 
+  --card-bg: #25262b;
+  --card-border: #2c2e33; 
+  --card-border-hover: #5c5f66; 
+  --card-image-bg: #2c2e33;
+  --sidebar-bg: #25262b;
+  --sidebar-border: #2c2e33;
+  --sidebar-active-bg: rgba(84, 142, 155, 0.2); /* primary-color with opacity */
+  --sidebar-active-text: #548e9b; /* primary-color */
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
+  --btn-primary-bg: #548e9b; /* primary-color */
 }
 
 html {

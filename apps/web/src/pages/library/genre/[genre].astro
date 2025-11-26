@@ -1,0 +1,44 @@
+---
+import LibraryLayout from '../../../layouts/LibraryLayout.astro';
+import BooksList from '../../../components/library/BooksList';
+import Sidebar from '../../../components/library/Sidebar';
+import Header from '../../../components/Header.astro';
+import { mockBooks } from '../../../data/mock-books';
+import { groupByGenre } from '../../../lib/library-utils';
+
+export function getStaticPaths() {
+  const genres = groupByGenre(mockBooks);
+  return genres.map(g => ({ params: { genre: g.name } }));
+}
+
+const { genre } = Astro.params;
+const decodedGenre = decodeURIComponent(genre);
+const genres = groupByGenre(mockBooks);
+
+const filteredBooks = mockBooks.filter(b => b.genre === decodedGenre);
+
+const title = `${decodedGenre} Books | Library`;
+const description = `Books in the ${decodedGenre} genre.`;
+const permalink = Astro.site ? `${Astro.site}library/genre/${genre}` : `/library/genre/${genre}`;
+---
+
+<LibraryLayout title={title} description={description} permalink={permalink}>
+  <div class="flex min-h-screen bg-[var(--layout-bg)]">
+    <Sidebar genres={genres} activeGenre={decodedGenre} client:load />
+    
+    <main class="flex-1 py-8 px-6 md:px-10 relative z-0 md:ml-[280px]">
+        <div class="mb-8">
+           <Header current="library" />
+        </div>
+
+        <div class="max-w-7xl mx-auto">
+          <div class="page-header mb-12">
+              <h1 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] font-serif mb-6 leading-tight">{decodedGenre} Books</h1>
+              <p class="text-[var(--text-main)] leading-relaxed mb-4 opacity-80">Explore our collection of {decodedGenre.toLowerCase()} books</p>
+          </div>
+          
+          <BooksList books={filteredBooks} client:load />
+        </div>
+    </main>
+  </div>
+</LibraryLayout>
