@@ -19,13 +19,13 @@ const genres = groupByGenre(mockBooks);
     
     <main class="flex-1 py-8 px-6 md:px-10 relative z-0 md:ml-[280px]">
         <div class="mb-8">
-           <Header current="library" />
+          <Header current="library" />
         </div>
         
         <div class="max-w-7xl mx-auto">
           <div class="page-header mb-12">
-              <h1 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] font-serif mb-6 leading-tight">My Library</h1>
-              <p class="text-[var(--text-main)] leading-relaxed mb-4 opacity-80">Discover your next favorite book</p>
+              <h1 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] font-serif mb-6 leading-tight">Library</h1>
+              <p class="text-[var(--text-main)] leading-relaxed mb-4 opacity-80">Library of projects and analyses</p>
           </div>
           
           <BooksList books={mockBooks} client:load />

@@ -10,5 +10,12 @@
   "observability": {
     "enabled": true
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "anauseam-library",
+      "database_id": "4501d8c7-da61-4ec1-877a-3c900a33f307"
+    }
+  ],
   "upload_source_maps": true
 }
