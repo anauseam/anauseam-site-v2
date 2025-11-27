@@ -1,18 +1,8 @@
 import React from 'react';
 
-function BookCard({ book, onSelect }) {
-  const handleClick = (e) => {
-    e.preventDefault();
-    if (onSelect) {
-      onSelect();
-    } else {
-      // Fallback if no handler provided, though we intend to always provide one
-      window.location.href = `/library/book/${book.id}`;
-    }
-  };
-
+function BookCard({ book }) {
   return (
-    <a href={`/library/book/${book.id}`} onClick={handleClick} className="block no-underline text-inherit h-full cursor-pointer">
+    <a href={`/library/book/${book.id}`} className="block no-underline text-inherit h-full">
       <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg overflow-hidden transition-all hover:border-[var(--card-border-hover)] flex flex-col h-full shadow-sm">
         <div className="h-60 overflow-hidden flex justify-center items-center bg-[var(--card-image-bg)] p-4 border-b border-[var(--card-border)]">
           <img

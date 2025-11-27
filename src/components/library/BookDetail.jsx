@@ -25,11 +25,11 @@ function BookDetail({ book, relatedBooks = [] }) {
             <div className="md:w-2/3 lg:w-3/4">
               <h1 className="text-3xl font-serif font-bold mb-3 text-[var(--text-main)]">{book.title}</h1>
               <h2 className="text-xl text-[var(--text-secondary)] mb-6 font-serif font-normal">
-                by {book.author}
+                {book.type === 'project' ? 'Language: ' : 'Author: '} {book.author}
               </h2>
 
               {book.genre && (
-                <div className="mb-6">
+                <div className="mb-6 flex gap-2 items-center">
                   <a
                     href={`/library/genre/${encodeURIComponent(book.genre)}`}
                     className="inline-block border border-[var(--primary-color)] text-[var(--primary-color)] text-sm px-3 py-1 rounded-full font-sans cursor-pointer hover:bg-[var(--primary-color)]/10 no-underline transition-colors"
@@ -38,6 +38,22 @@ function BookDetail({ book, relatedBooks = [] }) {
                   </a>
                 </div>
               )}
+
+              <div className="mb-6">
+                 <a 
+                   href={book.url || '#'}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   onClick={(e) => !book.url && e.preventDefault()}
+                   className={`inline-block px-6 py-3 text-center font-bold text-white rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${
+                     book.url 
+                       ? "bg-[var(--btn-primary-bg)] hover:opacity-90" 
+                       : "bg-gray-400 cursor-not-allowed"
+                   }`}
+                 >
+                   {book.type === 'project' ? 'Visit Project' : 'Read Report'}
+                 </a>
+              </div>
 
               <p className="text-[var(--text-main)] leading-relaxed text-lg">
                 {book.description}

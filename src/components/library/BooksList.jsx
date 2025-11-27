@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import BookCard from "./BookCard";
-import BookDetailModal from "./BookDetailModal";
 
 function BooksList({ books = [] }) {
   const [sortBy, setSortBy] = useState("");
   const [sortedBooks, setSortedBooks] = useState(books);
-  const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     setSortedBooks(books);
@@ -47,20 +45,10 @@ function BooksList({ books = [] }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sortedBooks.map((book) => (
           <div key={book.id} className="h-full">
-            <BookCard 
-              book={book} 
-              onSelect={() => setSelectedBook(book)} 
-            />
+            <BookCard book={book} />
           </div>
         ))}
       </div>
-
-      {selectedBook && (
-        <BookDetailModal 
-          book={selectedBook} 
-          onClose={() => setSelectedBook(null)} 
-        />
-      )}
     </div>
   );
 }

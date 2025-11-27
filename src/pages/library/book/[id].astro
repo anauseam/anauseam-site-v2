@@ -3,22 +3,63 @@ import LibraryLayout from '../../../layouts/LibraryLayout.astro';
 import BookDetail from '../../../components/library/BookDetail';
 import Sidebar from '../../../components/library/Sidebar';
 import Header from '../../../components/Header.astro';
-import { mockBooks } from '../../../data/mock-books';
 import { groupByGenre } from '../../../lib/library-utils';
 
-export function getStaticPaths() {
-  return mockBooks.map(b => ({ params: { id: b.id.toString() } }));
+const { id } = Astro.params;
+
+// 1. Fetch Data (Dynamic)
+let books = [];
+if (Astro.locals.runtime?.env?.DB) {
+  try {
+    const db = Astro.locals.runtime.env.DB;
+    
+    // Projects
+    const projectsResult = await db.prepare('SELECT * FROM projects ORDER BY created_at DESC').all();
+    const projects = (projectsResult.results || []).map(p => ({
+      id: `proj-${p.id}`, 
+      title: p.name,
+      author: p.language || 'Software',
+      type: 'project',
+      description: p.description,
+      image_url: '/assets/home-illustration-small.webp',
+      genre: 'Software Project',
+      created_at: p.created_at,
+      url: p.repository_url || p.demo_url // Pass the link!
+    }));
+
+    // Reports
+    const reportsResult = await db.prepare('SELECT * FROM reports ORDER BY created_at DESC').all();
+    const reports = (reportsResult.results || []).map(r => ({
+      id: `rep-${r.id}`,
+      title: r.title,
+      author: r.author || 'Anauseam',
+      type: 'report',
+      description: r.summary,
+      image_url: '/assets/about-illustration.webp',
+      genre: 'Analysis',
+      created_at: r.created_at,
+      url: r.file_url // Pass the link!
+    }));
+
+    books = [...projects, ...reports];
+  } catch (e) {
+    console.error("Error fetching from D1:", e);
+  }
+} else {
+    console.warn("No D1 binding found, using mock data");
+    const { mockBooks } = await import('../../../data/mock-books');
+    books = mockBooks;
 }
 
-const { id } = Astro.params;
-const book = mockBooks.find(b => b.id.toString() === id);
+// 2. Find current book and related books
+const book = books.find(b => b.id.toString() === id);
 
 if (!book) {
   return Astro.redirect('/library');
 }
 
-const genres = groupByGenre(mockBooks);
-const relatedBooks = mockBooks
+const genres = groupByGenre(books);
+const relatedBooks = books
     .filter(b => b.genre === book.genre && b.id !== book.id)
     .slice(0, 5);
 
