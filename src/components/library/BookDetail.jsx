@@ -24,7 +24,7 @@ function BookDetail({ book, relatedBooks = [] }) {
             </div>
             <div className="md:w-2/3 lg:w-3/4">
               <h1 className="text-3xl font-serif font-bold mb-3 text-[var(--text-main)]">{book.title}</h1>
-              <h2 className="text-xl text-[var(--text-secondary)] mb-6 font-serif font-normal">
+              <h2 className="text-xl text-[var(--text-secondary)] mb-10 font-serif font-normal">
                 Author: {book.author}
               </h2>
 

@@ -19,7 +19,7 @@ if (Astro.locals.runtime?.env?.DB) {
     const projects = (projectsResult.results || []).map(p => ({
       id: `proj-${p.id}`, 
       title: p.name,
-      author: p.language || 'Software',
+      author: p.author || 'Anauseam',
       description: p.description,
       image_url: p.image_url || '/assets/home-illustration-small.webp',
       genre: 'Project',
