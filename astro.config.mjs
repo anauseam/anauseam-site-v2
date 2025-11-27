@@ -12,7 +12,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid',
+  output: 'server',
   site: 'https://example.com',
   integrations: [mdx(), svelte(), react()],
 
