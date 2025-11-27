@@ -1,8 +1,18 @@
 import React from 'react';
 
-function BookCard({ book }) {
+function BookCard({ book, onSelect }) {
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (onSelect) {
+      onSelect();
+    } else {
+      // Fallback if no handler provided, though we intend to always provide one
+      window.location.href = `/library/book/${book.id}`;
+    }
+  };
+
   return (
-    <a href={`/library/book/${book.id}`} className="block no-underline text-inherit h-full">
+    <a href={`/library/book/${book.id}`} onClick={handleClick} className="block no-underline text-inherit h-full cursor-pointer">
       <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg overflow-hidden transition-all hover:border-[var(--card-border-hover)] flex flex-col h-full shadow-sm">
         <div className="h-60 overflow-hidden flex justify-center items-center bg-[var(--card-image-bg)] p-4 border-b border-[var(--card-border)]">
           <img
@@ -13,7 +23,10 @@ function BookCard({ book }) {
         </div>
         <div className="p-5 space-y-3 flex flex-col flex-grow">
           <h3 className="text-lg font-serif mb-1 line-clamp-1 text-[var(--text-main)]">{book.title}</h3>
-          <p className="text-[var(--text-secondary)] text-sm mb-2">by {book.author}</p>
+          <p className="text-[var(--text-secondary)] text-sm mb-2">
+            {book.type === 'project' ? 'Language: ' : 'Author: '} 
+            {book.author}
+          </p>
           <p className="text-[var(--text-main)] text-sm overflow-hidden line-clamp-3 mb-4 flex-grow opacity-90">
             {book.description}
           </p>

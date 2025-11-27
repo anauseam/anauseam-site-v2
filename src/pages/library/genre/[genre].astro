@@ -3,22 +3,57 @@ import LibraryLayout from '../../../layouts/LibraryLayout.astro';
 import BooksList from '../../../components/library/BooksList';
 import Sidebar from '../../../components/library/Sidebar';
 import Header from '../../../components/Header.astro';
-import { mockBooks } from '../../../data/mock-books';
 import { groupByGenre } from '../../../lib/library-utils';
 
-export function getStaticPaths() {
-  const genres = groupByGenre(mockBooks);
-  return genres.map(g => ({ params: { genre: g.name } }));
+const { genre } = Astro.params;
+const decodedGenre = decodeURIComponent(genre || '');
+
+// 1. Fetch ALL data again (same logic as index.astro)
+let books = [];
+if (Astro.locals.runtime?.env?.DB) {
+  try {
+    const db = Astro.locals.runtime.env.DB;
+    
+    // Projects
+    const projectsResult = await db.prepare('SELECT * FROM projects ORDER BY created_at DESC').all();
+    const projects = (projectsResult.results || []).map(p => ({
+      id: `proj-${p.id}`, 
+      title: p.name,
+      author: p.language || 'Software',
+      description: p.description,
+      image_url: '/assets/home-illustration-small.webp',
+      genre: 'Software Project',
+      created_at: p.created_at
+    }));
+
+    // Reports
+    const reportsResult = await db.prepare('SELECT * FROM reports ORDER BY created_at DESC').all();
+    const reports = (reportsResult.results || []).map(r => ({
+      id: `rep-${r.id}`,
+      title: r.title,
+      author: r.author || 'Anauseam',
+      description: r.summary,
+      image_url: '/assets/about-illustration.webp',
+      genre: 'Analysis',
+      created_at: r.created_at
+    }));
+
+    books = [...projects, ...reports];
+  } catch (e) {
+    console.error("Error fetching from D1:", e);
+  }
+} else {
+    console.warn("No D1 binding found, using mock data");
+    const { mockBooks } = await import('../../../data/mock-books');
+    books = mockBooks;
 }
 
-const { genre } = Astro.params;
-const decodedGenre = decodeURIComponent(genre);
-const genres = groupByGenre(mockBooks);
+// 2. Filter by Genre
+const filteredBooks = books.filter(b => b.genre === decodedGenre);
+const genres = groupByGenre(books);
 
-const filteredBooks = mockBooks.filter(b => b.genre === decodedGenre);
-
-const title = `${decodedGenre} Books | Library`;
-const description = `Books in the ${decodedGenre} genre.`;
+const title = `${decodedGenre} | Library`;
+const description = `Browse ${decodedGenre} in the library.`;
 const permalink = Astro.site ? `${Astro.site}library/genre/${genre}` : `/library/genre/${genre}`;
 ---
 
@@ -33,8 +68,8 @@ const permalink = Astro.site ? `${Astro.site}library/genre/${genre}` : `/library
 
         <div class="max-w-7xl mx-auto">
           <div class="page-header mb-12">
-              <h1 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] font-serif mb-6 leading-tight">{decodedGenre} Books</h1>
-              <p class="text-[var(--text-main)] leading-relaxed mb-4 opacity-80">Explore our collection of {decodedGenre.toLowerCase()} books</p>
+              <h1 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] font-serif mb-6 leading-tight">{decodedGenre}</h1>
+              <p class="text-[var(--text-main)] leading-relaxed mb-4 opacity-80">Browsing category: {decodedGenre}</p>
           </div>
           
           <BooksList books={filteredBooks} client:load />
