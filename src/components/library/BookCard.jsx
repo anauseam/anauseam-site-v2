@@ -14,8 +14,7 @@ function BookCard({ book }) {
         <div className="p-5 space-y-3 flex flex-col flex-grow">
           <h3 className="text-lg font-serif mb-1 line-clamp-1 text-[var(--text-main)]">{book.title}</h3>
           <p className="text-[var(--text-secondary)] text-sm mb-2">
-            {book.type === 'project' ? 'Language: ' : 'Author: '} 
-            {book.author}
+            Author: {book.author}
           </p>
           <p className="text-[var(--text-main)] text-sm overflow-hidden line-clamp-3 mb-4 flex-grow opacity-90">
             {book.description}

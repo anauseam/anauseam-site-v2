@@ -21,8 +21,8 @@ if (Astro.locals.runtime?.env?.DB) {
       author: p.language || 'Software',
       type: 'project',
       description: p.description,
-      image_url: '/assets/home-illustration-small.webp',
-      genre: 'Software Project',
+      image_url: p.image_url || '/assets/home-illustration-small.webp',
+      genre: 'Project',
       created_at: p.created_at,
       url: p.repository_url || p.demo_url // Pass the link!
     }));
@@ -35,7 +35,7 @@ if (Astro.locals.runtime?.env?.DB) {
       author: r.author || 'Anauseam',
       type: 'report',
       description: r.summary,
-      image_url: '/assets/about-illustration.webp',
+      image_url: r.image_url || '/assets/about-illustration.webp',
       genre: 'Analysis',
       created_at: r.created_at,
       url: r.file_url // Pass the link!
