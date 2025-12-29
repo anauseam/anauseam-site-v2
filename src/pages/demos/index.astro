@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const demos = [
+  {
+    slug: "piano-tuning",
+    title: "Piano Tuning Analysis",
+    description:
+      "Detailed analysis and simulation of piano tuning stability using physics-based modeling and Quarto.",
+  },
+];
+---
+
+<BaseLayout
+  title="Demos"
+  description="Interactive demos and analysis"
+  permalink="/demos"
+>
+  <h1>Demos & Analysis</h1>
+  <p class="intro">A collection of interactive experiments and documents.</p>
+
+  <div class="demo-grid">
+    {
+      demos.map((demo) => (
+        <a href={`/demos/${demo.slug}`} class="demo-card">
+          <h2>{demo.title}</h2>
+          <p>{demo.description}</p>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: 2rem;
+    color: #666;
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .demo-card {
+    display: block;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .demo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ddd;
+  }
+  .demo-card h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    color: var(--color-primary, #333);
+  }
+  .demo-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+  }
+</style>

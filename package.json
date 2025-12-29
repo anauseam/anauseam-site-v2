@@ -6,7 +6,7 @@
     "start": "astro dev",
     "build": "astro build",
     "postbuild": "printf \"_worker.js\\n_routes.json\\n\" > dist/.assetsignore",
-    "preview": "astro preview",
+    "preview": "wrangler dev",
     "deploy": "wrangler deploy --config wrangler.json",
     "astro": "astro"
   },
