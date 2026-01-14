@@ -11,6 +11,8 @@ dist/
 
 # dependencies
 node_modules/
+.npmrc
+.stackblitzrc
 
 # logs
 npm-debug.log*
@@ -25,3 +27,17 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# Editor directories and files
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# Testing
+coverage/
+
+# Astro envs (more general)
+.env*.local
